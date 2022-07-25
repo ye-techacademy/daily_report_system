@@ -156,3 +156,12 @@ table#report_list .report_action {
 h3 {
     font-size: larger;
 }
+
+input[value="解除する"]{
+    background-color:lightsteelblue;
+    border: 2px solid lightsteelblue;
+}
+input[value="フォローする"]{
+    background-color:lightgreen;
+    border: 2px solid lightgreen;
+}
