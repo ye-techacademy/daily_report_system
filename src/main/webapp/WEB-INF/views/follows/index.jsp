@@ -43,10 +43,18 @@
                         <td>
                             <c:choose>
                                 <c:when test="${followed_ids.contains(employee.getId())}">
-                                    <a href="<c:url value='?action=${actFol}&command=${commDestroy}&id=${employee.id}' />">解除する</a>
+                                    <!-- <a href="<c:url value='?action=${actFol}&command=${commDestroy}&id=${employee.id}' />">解除する</a> -->
+                                    <form action="<c:url value='?action=${actFol}&command=${commDestroy}' />" method="post">
+                                    <input type="submit" value="解除する">
+                                    <input type="hidden" value="${employee.id}" name="id">
+                                    </form>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="<c:url value='?action=${actFol}&command=${commCreate}&id=${employee.id}' />">フォローする</a>
+                                    <!--<a href="<c:url value='?action=${actFol}&command=${commCreate}&id=${employee.id}' />">フォローする</a>-->
+                                    <form action="<c:url value='?action=${actFol}&command=${commCreate}' />" method="post">
+                                    <input type="submit" value="フォローする">
+                                    <input type="hidden" value="${employee.id}" name="id">
+                                    </form>
                                 </c:otherwise>
                             </c:choose>
                         </td>
