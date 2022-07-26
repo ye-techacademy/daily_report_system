@@ -162,6 +162,6 @@ input[value="解除する"]{
     border: 2px solid lightsteelblue;
 }
 input[value="フォローする"]{
-    background-color:lightgreen;
-    border: 2px solid lightgreen;
+    background-color:#cbeab3;
+    border: 2px solid #cbeab3;
 }

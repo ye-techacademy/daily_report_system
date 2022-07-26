@@ -47,7 +47,8 @@
         </c:if>
 
         <p>
-            <a href="<c:url value='?action=${actRep}&command=${commIdx}' />">一覧に戻る</a>
+            <!-- <a href="<c:url value='?action=${actRep}&command=${commIdx}' />">日報一覧に戻る</a> -->
+            <a href="#" onclick="window.history.back(); return false;">一覧に戻る</a>
         </p>
     </c:param>
 </c:import>

@@ -12,6 +12,7 @@ import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
+import services.EmployeeService;
 import services.ReportService;
 
 /**
@@ -21,6 +22,7 @@ import services.ReportService;
 public class ReportAction extends ActionBase {
 
     private ReportService service;
+    private EmployeeService serviceEmp;
 
     /**
      * メソッドを実行する
@@ -29,9 +31,11 @@ public class ReportAction extends ActionBase {
     public void process() throws ServletException, IOException {
 
         service = new ReportService();
+        serviceEmp=new EmployeeService();
 
         //メソッドを実行
         invoke();
+        serviceEmp.close();
         service.close();
     }
 
@@ -64,6 +68,39 @@ public class ReportAction extends ActionBase {
         //一覧画面を表示
         forward(ForwardConst.FW_REP_INDEX);
     }
+
+
+    /**
+     * フォローされているユーザの日報の一覧を表示する
+     */
+    public void followedIndex() throws ServletException, IOException {
+
+        //フォローした人の情報を取得
+        EmployeeView ev=serviceEmp.findOne(Integer.parseInt(getRequestParam(AttributeConst.EMP_ID)));
+
+        //フォローされている従業員が作成した日報データを、指定されたページ数の一覧画面に表示する分取得する
+        int page = getPage();
+        List<ReportView> reports = service.getMinePerPage(ev, page);
+
+        //フォローされている従業員が作成した日報データの件数を取得
+        long myReportsCount = service.countAllMine(ev);
+
+        putRequestScope(AttributeConst.REPORTS, reports); //取得した日報データ
+        putRequestScope(AttributeConst.REP_COUNT, myReportsCount); //フォローされている従業員が作成した日報の数
+        putRequestScope(AttributeConst.PAGE, page); //ページ数
+        putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
+
+        //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
+        String flush = getSessionScope(AttributeConst.FLUSH);
+        if (flush != null) {
+            putRequestScope(AttributeConst.FLUSH, flush);
+            removeSessionScope(AttributeConst.FLUSH);
+        }
+
+        //一覧画面を表示
+        forward(ForwardConst.FW_REP_FOLED_INDEX);
+    }
+
 
     /**
      * 新規登録画面を表示する
