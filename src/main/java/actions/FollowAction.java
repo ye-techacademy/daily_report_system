@@ -44,10 +44,10 @@ public class FollowAction extends ActionBase {
 
         //指定されたページ数の一覧画面に表示するデータを取得
         int page = getPage();
-        List<EmployeeView> employees = employeeService.getPerPage(page);
+        List<EmployeeView> employees = employeeService.getPerPageExcludeId(page, ev.getId());
 
-        //全ての従業員データの件数を取得
-        long employeeCount = employeeService.countAll();
+        //全ての従業員データの件数を取得、ログインユーザを除外しているので-1している。
+        long employeeCount = employeeService.countAll()-1;
 
         putRequestScope(AttributeConst.FOL_FOLED_IDS, followed_ids);// フォロー中のidのリスト
         putRequestScope(AttributeConst.EMPLOYEES, employees); //取得した従業員データ
